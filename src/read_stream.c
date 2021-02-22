@@ -61,7 +61,7 @@ char *mx_read_stream(t_ush *ush, t_hst *hst) {
     int length = 0, tmp = 0;
     t_hst *head = NULL;
     
-    mx_push_f(&hst, "\0"); 
+    mx_push_front_hst(&hst, "\0"); 
     head = hst; 
     while ((length = read(0, &buf, 4)) > 0) {
         if (length == 1) {
