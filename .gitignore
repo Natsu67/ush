@@ -1,0 +1,21 @@
+.DS_Store
+.directory
+*.out
+*.txt
+*.cc
+*.hh
+*.pdf
+*.a
+*.o
+*.out
+*obj
+lab/
+lb/
+.vscode/
+1
+2
+1 копія
+copy
+*.zip
+ush
+*.sh
