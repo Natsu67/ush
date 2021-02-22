@@ -12,38 +12,42 @@ static char *new_path(char *newpwd, char *splitted_path, t_cd *in) {
         free(newpwd);
         return NULL;
     }
+
     return newpwd;
 }
 
-static char *dotdot(char *newpwd) {
-    char **p = mx_strsplit(newpwd, '/');
-    char *tmp = NULL;
+static char *check_new_path(char *newpwd) {
+    char **new_paths = mx_strsplit(newpwd, '/');
+    char *temp = NULL;
 
-    if (p == NULL || p[1] == NULL) {
+    if (new_paths == NULL || new_paths[1] == NULL) {
         free(newpwd);
         return mx_strdup("/");
     }
-    tmp = mx_strjoin(tmp, "/");
-    for (int i = 0; p[i + 1]; i++) {
-        tmp = mx_strjoin(tmp, p[i]);
-        (p[i + 2] != NULL) ? tmp = mx_strjoin(tmp, "/") : 0;
+
+    temp = mx_strjoin(temp, "/");
+    for (int i = 0; new_paths[i + 1]; i++) {
+        temp = mx_strjoin(temp, new_paths[i]);
+        (new_paths[i + 2] != NULL) ? temp = mx_strjoin(temp, "/") : 0;
     }
+
     free(newpwd);
-    newpwd = tmp;
-    mx_del_strarr(&p);
+    newpwd = temp;
+    mx_del_strarr(&new_paths);
+
     return newpwd;
 }
 
 char *gogo(char *newpwd, char **m, t_cd *in) {
-    for (int j = 0; m[j]; j++) {
-        if (!strcmp(m[j], "~") && j == 0) {
+    for (int i = 0; m[i]; i++) {
+        if (!strcmp(m[i], "~") && i == 0) {
             continue;
-        } else if (!strcmp(m[j], "..") && newpwd != NULL && strcmp(newpwd, "/") != 0) {
-            newpwd = dotdot(newpwd);
-        } else if (!strcmp(m[j], ".")) {
+        } else if (!strcmp(m[i], "..") && newpwd != NULL && strcmp(newpwd, "/") != 0) {
+            newpwd = check_new_path(newpwd);
+        } else if (!strcmp(m[i], ".")) {
             continue;
-        } else if (strcmp(m[j], "..") != 0) {
-            newpwd = new_path(newpwd, m[j], in);
+        } else if (strcmp(m[i], "..") != 0) {
+            newpwd = new_path(newpwd, m[i], in);
             if (in->error > 0) {
                 mx_del_strarr(&m);
                 errno = 0;
@@ -51,6 +55,8 @@ char *gogo(char *newpwd, char **m, t_cd *in) {
             }
         }
     }
+
     mx_del_strarr(&m);
+
     return newpwd;
 }
