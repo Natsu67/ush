@@ -11,7 +11,7 @@
 - [ ] free_list.c 
 - [ ] free_list2.c
 - [ ] free_node.c
-- [ ] history.c 
+- [x] history.c 
 - [ ] job_chars_find.c
 - [ ] job_cut_str.c 
 - [ ] job_num_find.c
