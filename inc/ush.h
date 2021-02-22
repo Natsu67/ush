@@ -29,11 +29,6 @@
 #define MX_IFMT          0170000    
 #define MX_IFLNK         0120000         /* [XSI] symbolic link */
 
-#define YARIK_PEREPISIVAYET_LS 228
-
-// #define ORACLE_HACK
-
-
 typedef struct s_jobs {
     int num;
     int index;
