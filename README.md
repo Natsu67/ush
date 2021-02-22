@@ -1,9 +1,10 @@
 # ush
 - [ ] ush.h
-- [ ] cd_gogo.c 
-- [ ] copy_dub_arr.c
-- [ ] del_job.c
-- [ ] detect_builds.c 
+- [x] add_job.c
+- [x] cd_gogo.c 
+- [x] copy_dub_arr.c
+- [x] del_job.c
+- [x] detect_builds.c 
 - [ ] detect_exp.c
 - [ ] env_in_list.c
 - [ ] env_print.c 
@@ -17,7 +18,7 @@
 - [ ] job_num_find.c
 - [x] main.c
 - [x] mx_canon.c 
-- [ ] mx_create_job.c
+- [x] mx_create_job.c
 - [ ] mx_getopt.c 
 - [ ] mx_pop_frontf.c
 - [ ] mx_push_backdup.c
@@ -26,9 +27,9 @@
 - [ ] mx_strpart.c 
 - [ ] name_search.c
 - [ ] no_such.c
-- [ ] not_found.c 
+- [x] not_found.c 
 - [ ] opencheck.c
-- [ ] parse.c 
+- [x] parse.c 
 - [ ] parse_backquote.c
 - [ ] parse_dblqte_openparen_closeparen_opbrce_clbrce.c 
 - [ ] parse_dollar.c
@@ -55,4 +56,4 @@
 - [ ] ush_jobs.c
 - [ ] ush_pwd.c
 - [ ] ush_unset.c 
-- [ ] ush_which.c
+- [x] ush_which.c
