@@ -26,7 +26,6 @@ static void start_main_loop(t_ush *ush) {
 static void pipe_call(t_ush *ush) {
     int buf = 0;
     char *line = NULL;
-    //char *str = NULL;
 
     ush->env_set = mx_create_node(NULL);
     while (read(STDIN_FILENO, &buf, 3) > 0) {
@@ -37,14 +36,6 @@ static void pipe_call(t_ush *ush) {
     mx_parse(line, ush);
     mx_free_list2(&ush->env_set);
 }
-
-/*static void set_shell_lvl_up() {
-    if (getppid() == 1) return;
-
-    char *shlvl = mx_itoa((atoi(getenv("SHLVL"))) + 1);
-    setenv("SHLVL", shlvl, 1);
-    free(shlvl);
-}*/
 
 static void set_def_env(t_ush *ush) {
     struct passwd *pw = getpwuid(getuid());
@@ -66,7 +57,7 @@ int main(void) {
     ush->jobs = mx_create_job(NULL, -1, -1, NULL);
 
     set_def_env(ush);
-    //set_shell_lvl_up();
+
     //Set shell lvl up
     if (getppid() != 1){
         char *shlvl = mx_itoa((atoi(getenv("SHLVL"))) + 1);
