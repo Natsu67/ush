@@ -20,9 +20,3 @@ void mx_disable_canon(void) {
     tcsetattr(STDIN_FILENO, TCSADRAIN, mx_get_tty());
 }
 
-void mx_init_signals(void) {
-    sigset_t mask;
-
-    sigfillset(&mask);
-    sigprocmask(SIG_SETMASK, &mask, NULL);
-}

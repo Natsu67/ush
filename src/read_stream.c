@@ -1,78 +1,77 @@
 #include "../inc/ush.h"
 
-static char *hist_but(char *line, char *data, int *x) {
-    for (; *x > 0; (*x)--) {
+static char *hist_but(char *line, char *data, int *tmp) {
+    while(*tmp > 0) {
         printf("%c[1C", 27);
         fflush(stdout);
+        (*tmp)--;
     }
-    for (int i = 0; line != NULL && i < mx_strlen(line); i++)
+    for (int i = 0; line != NULL && i < mx_strlen(line); i++) {
         write(1, "\b \b", 3);
+    }
     mx_strdel(&line);
     write(1, data, mx_strlen(data));
     line = mx_strdup(data);
     return line;
 }
 
-static char *button(t_hst **hs, char *line, int buf, int *x) {
-    t_hst *h = *hs;
+static char *button(t_hst **hs, char *line, int buf, int *tmp) {
+    t_hst *hst = *hs;
 
     if (buf == 4283163) {
-        h->next ? h = h->next : 0;
-        line = hist_but(line, h->data, x);
+        if(hst->next) hst = hst->next;
+        line = hist_but(line, hst->data, tmp);
     }
     if (buf == 4348699) {
-        h->prev ? h = h->prev : 0;
-        line = hist_but(line, h->data, x);
+        if(hst->prev) hst = hst->prev;
+        line = hist_but(line, hst->data, tmp);
     }
-    if (buf == 4414235 && *x > 0) {
+    if (buf == 4414235 && *tmp > 0) {
         printf("%c[1C", 27);
-        (*x)--;
+        (*tmp)--;
     }
-    if (buf == 4479771 && line != NULL && mx_strlen(line) > *x) { 
+    if (buf == 4479771 && line != NULL && mx_strlen(line) > *tmp) { 
         printf("%c[1D", 27);
-        (*x)++;
+        (*tmp)++;
     }
-    *hs = h;
+    *hs = hst;
     fflush(stdout);
     return line;
 }
 
-static int check(t_ush *ush, int buf, char **l) {
-    char *line = *l;
+static int check(t_ush *ush, int buf, char **line) {
+    char *tmp_line = *line;
 
-    if (buf == 10 || buf == 12 || (buf == 4 && 
-        (line == NULL || !strlen(line))) || buf == 3) {
+    if (buf == 10 || buf == 12 || (buf == 4 && (tmp_line == NULL || !strlen(tmp_line))) || buf == 3) {
         if (buf == 3) {
-            if (line != NULL)
-                mx_strdel(l); 
+            if (tmp_line != NULL) mx_strdel(line); 
             ush->last_return = 130;
+        } else if (tmp_line != NULL && !strlen(tmp_line)) {
+            mx_strdel(line);
         }
-        else if (line != NULL && !strlen(line))
-            mx_strdel(l);
         fflush(stdout);
         return 1;
     }
     return 0;
 }
 
-char *mx_read_stream(t_ush *ush, t_hst *h) {
+char *mx_read_stream(t_ush *ush, t_hst *hst) {
     unsigned int buf = 0;
     char *line = NULL;
-    int len = 0;
-    int x = 0;
+    int length = 0, tmp = 0;
     t_hst *head = NULL;
     
-    mx_push_f(&h, "\0"); 
-    head = h; 
-    while ((len = read(0, &buf, 4)) > 0) {
-        if (len == 1) {
+    mx_push_f(&hst, "\0"); 
+    head = hst; 
+    while ((length = read(0, &buf, 4)) > 0) {
+        if (length == 1) {
             if (check(ush, buf, &line) == 1) {
-                buf == 4 ? line = mx_strdup("exit") : 0;
+                if(buf == 4) line = mx_strdup("exit");
                 break;
             }
-            line = mx_stream(buf, line, &x);
+            line = mx_stream(buf, line, &tmp);
         }
-        (len > 1) ? line = button(&h, line, buf, &x) : 0;
+        if(length > 1) line = button(&hst, line, buf, &tmp);
         buf = 0;
     }
     mx_free_node(head);
