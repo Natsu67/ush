@@ -26,7 +26,7 @@ static bool coi(t_list **env, t_list **n, int count, char **tmp) {
     t_list *f = *n;
 
     sub =  mx_strsplit(f->data, '=');
-    if (mx_strcmp_null(sub[0], tmp[0]) == 0) {
+    if (mx_strcmp(sub[0], tmp[0]) == 0) {
         uns_var(env, count, &f);
         unsetenv(tmp[0]);
         mx_del_strarr(&sub);
@@ -44,7 +44,7 @@ static bool global_set(char *args) {
     for (int i = 0; environ[i]; i++) {
         if (mx_get_substr_index(environ[i], args) >= 0) {
             tmp = mx_strsplit(environ[i], '=');
-            if (mx_strcmp_null(tmp[0], args) == 0) {
+            if (mx_strcmp(tmp[0], args) == 0) {
                unsetenv(tmp[0]); 
                mx_del_strarr(&tmp);
                return true;

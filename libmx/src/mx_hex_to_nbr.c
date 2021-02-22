@@ -1,33 +1,26 @@
 #include "../inc/libmx.h"
 
-static char hexchar(char c) {
-    if (mx_isdigit(c))
-        return c;
-    if ('a' == c || 'A' == c)
-        return 58;
-    if ('b' == c || 'B' == c)
-        return 59;
-    if ('c' == c || 'C' == c)
-        return 60;
-    if ('d' == c || 'D' == c)
-        return 61;
-    if ('e' == c || 'E' == c)
-        return 62;
-    if ('f' == c || 'F' == c)
-        return 63;
-    else
-        return 0;
-}
-
 unsigned long mx_hex_to_nbr(const char *hex) {
-    unsigned long num = 0;
-    unsigned long i = 0;
-
-    if (!hex)
-        return 0;
-    while (hexchar(hex[i])) {
-        num = num * 16 + hexchar(hex[i]) - 48;
-        i++;
-    }
-    return num;
+	if (hex == NULL) return 0;
+	int j = 0;
+	while (hex[j] != '\0') j++;
+	unsigned long result = 0;
+	unsigned long dec = 1;
+	for (int i = j - 1; i >= 0; i--) {
+		if (mx_isdigit(hex[i])) {
+			result += ((hex[i] - 48) * dec);
+			dec *= 16;
+		}
+		if (mx_isalpha(hex[i])) {
+			if (mx_isupper(hex[i])) {
+				result += ((hex[i] - 55) * dec);
+				dec *= 16;
+			}
+			else {
+				result += ((hex[i] - 87) * dec);
+				dec *= 16;
+			}
+		}
+	}
+	return result;
 }

@@ -12,7 +12,7 @@ static void print_sec(t_jobs *jobs, char *flags) {
     write(1, "\n", 1);
     if (flags != NULL && mx_get_char_index(flags, 'd') > 0) {
         write(1, "(pwd : ", 7);
-        if (mx_strcmp_null(j->pwd, getenv("HOME")) == 0)
+        if (mx_strcmp(j->pwd, getenv("HOME")) == 0)
             write(1, "~", 1); 
         else
             write(1, j->pwd, mx_strlen(j->pwd));

@@ -23,7 +23,7 @@ static char *del_check(char *line, int buf, int *x) {
         for (int i = 0; i <= *x; i++)
             line = del_button(line);
         mx_printstr(tmp);
-        line = mx_cooljoin(line, tmp);
+        line = mx_strjoin(line, tmp);
         for (int i = 0; i < *x; i++) {
             printf("%c[1D", 27);
             fflush(stdout);
@@ -43,8 +43,8 @@ static char *edit_line(char *line, int *x, char *ch) {
     for (int i = 0; i < *x; i++)
         line = del_button(line);
     printf("%s%s", ch, tmp);
-    line = mx_delit_fre(line, ch);
-    line = mx_cooljoin(line, tmp);
+    line = mx_strjoin(line, ch);
+    line = mx_strjoin(line, tmp);
     for (int i = 0; i < *x; i++) {
         printf("%c[1D", 27);
         fflush(stdout);
@@ -63,7 +63,7 @@ static char *delete_but(char *line, int *x) {
     for (int i = 0; i < *x; i++)
         line = del_button(line);
     printf("%s", tmp);
-    line = mx_cooljoin(line, tmp);
+    line = mx_strjoin(line, tmp);
     for (int i = 0; i < *x - 1; i++) {
         printf("%c[1D", 27);
         fflush(stdout);
@@ -85,7 +85,7 @@ char *mx_stream(int buf, char *line, int *x) {
             line = edit_line(line, x, ch);
         else {
             write(1, ch, 4);
-            line = mx_delit_fre(line, ch);
+            line = mx_strjoin(line, ch);
         }
     }
     fflush(stdout);

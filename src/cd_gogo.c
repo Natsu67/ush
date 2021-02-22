@@ -5,8 +5,8 @@ static char *new_path(char *newpwd, char *splitted_path, t_cd *in) {
 
     lstat(newpwd, &inf);
 
-    newpwd = mx_delit_fre(newpwd, "/");
-    newpwd = mx_delit_fre(newpwd, splitted_path);
+    newpwd = mx_strjoin(newpwd, "/");
+    newpwd = mx_strjoin(newpwd, splitted_path);
     
     if (!mx_opencheck(newpwd, &in->error, in->flag_s)) {
         free(newpwd);
@@ -25,8 +25,8 @@ static char *dotdot(char *newpwd) {
     }
     tmp = mx_strjoin(tmp, "/");
     for (int i = 0; p[i + 1]; i++) {
-        tmp = mx_delit_fre(tmp, p[i]);
-        (p[i + 2] != NULL) ? tmp = mx_delit_fre(tmp, "/") : 0;
+        tmp = mx_strjoin(tmp, p[i]);
+        (p[i + 2] != NULL) ? tmp = mx_strjoin(tmp, "/") : 0;
     }
     free(newpwd);
     newpwd = tmp;

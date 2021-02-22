@@ -17,7 +17,7 @@ static bool del_part(t_jobs **jobs, int num) {
 
 bool mx_job_num_find(char *args, t_jobs **jobs) {
     char *tmp = mx_cut_str_forjob(args);
-    int num = mx_atoi(tmp);
+    int num = atoi(tmp);
     t_jobs *j = *jobs;
     bool flag = true;
 

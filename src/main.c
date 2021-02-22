@@ -31,7 +31,7 @@ static void pipe_call(t_ush *ush) {
     ush->env_set = mx_create_node(NULL);
     while (read(STDIN_FILENO, &buf, 3) > 0) {
         char *str = (char *)(&buf);
-        line = mx_delit_fre(line, str);
+        line = mx_strjoin(line, str);
         buf = 0;
     }
     mx_parse(line, ush);

@@ -1,30 +1,16 @@
 #include "../inc/libmx.h"
 
-static void skip_spaces(const char *str, int *i) {
-    while (mx_isspace(str[*i])) {
-        (*i)++;
-    }
-}
-
-static void skip_untilspace(const char *str, int *i) {
-    while (!mx_isspace(str[*i]) && str[*i]) {
-        (*i)++;
-    }
-}
-
 char *mx_strtrim(const char *str) {
-    int len = 0;
-    int min_index = 0;;
-    int nul_index = 0;
-
-    if (!str)
-        return NULL;
-    skip_spaces(str, &len);
-    min_index = len;
-    while (str[len]) {
-        skip_untilspace(str, &len);
-        nul_index = len;
-        skip_spaces(str, &len);
+    if(!str) return NULL;
+    int space_before = 0;
+    int space_after = 0;
+    for (int i = 0; mx_isspace(str[i]); i++) {
+        space_before++;
     }
-    return mx_strndup(str + min_index, nul_index - min_index);
+    if(space_before == mx_strlen(str)) return (char *)str;
+    for (int i = mx_strlen(str); mx_isspace(str[i-1]); i--) {
+        space_after++;
+    }
+    int new_size = mx_strlen(str) - (space_before + space_after);
+    return mx_strndup(&str[space_before], new_size);
 }

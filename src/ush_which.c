@@ -9,7 +9,7 @@ static int check_access(char *args, int flag) {
     m = mx_strsplit(path, ':');
     for (int i = 0; m[i]; i++) {
         tmp = mx_strjoin(m[i], "/");
-        tmp = mx_delit_fre(tmp, args);
+        tmp = mx_strjoin(tmp, args);
         if (access(tmp, F_OK) == 0) {
             flag != 2 ? printf("%s\n", tmp) : 0;
             f = 0;
