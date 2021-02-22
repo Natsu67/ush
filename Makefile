@@ -1,43 +1,51 @@
 NAME = ush
-INC = inc/ush.h
-SRC := $(wildcard src/*.c)
-OBJ = $(addprefix obj/, $(notdir $(SRC:%.c=%.o)))
-LIBMX = libmx/libmx.a
-FLAGS = -std=c11 -Wall -Wextra -Werror -Wpedantic 
-SANFLAG = -g -fsanitize=address
 
-all: $(NAME)
+CFLG = -std=c11 $(addprefix -W, all extra error pedantic) -g
 
-install: $(NAME)
+SRC_DIR	= src
+INC_DIR	= inc
+OBJ_DIR	= obj
 
-$(NAME): $(LIBMX) $(OBJ)
-	@make clean
-	@clang $(FLAGS) $(OBJ) $(LIBMX) -o $(NAME)
-	@printf "\x1b[32;1m$(NAME) created\x1b[0m\n"
+INC_FILES = $(wildcard $(INC_DIR)/*.h)
+SRC_FILES = $(wildcard $(SRC_DIR)/*.c)
+OBJ_FILES = $(addprefix $(OBJ_DIR)/, $(notdir $(SRC_FILES:%.c=%.o)))
 
-$(LIBMX):
-	@make -C libmx
+LMX_DIR	= libmx
+LMX_A:=	$(LMX_DIR)/libmx.a
+LMX_INC:= $(LMX_DIR)/inc
 
-$(OBJ): | obj
+all: install clean
 
-obj:
-	@mkdir obj
+install: $(LMX_A) $(NAME)
 
-obj/%.o: src/%.c $(INC)
-	@clang $(FLAGS) -c $< -o $@
-	@printf "\x1b[32mcompiled: \x1b[0m[$<]\n"
+$(NAME): $(OBJ_FILES)
+	@clang $(CFLG) $(OBJ_FILES) -L$(LMX_DIR) -lmx -o $@
+	@printf "\r\33[2K$@ \033[32;1mcreated\033[0m\n"
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(INC_FILES)
+	@clang $(CFLG) -c $< -o $@ -I$(INC_DIR) -I$(LMX_INC)
+	@printf "\r\33[2K$(NAME) \033[33;1mcompile \033[0m$(<:$(SRC_DIR)/%.c=%) "
+
+$(OBJ_FILES): | $(OBJ_DIR)
+
+$(OBJ_DIR):
+	@mkdir -p $@
+
+$(LMX_A):
+	@make -sC $(LMX_DIR)
+	@printf "\r\33[2Klibmx \033[32;1mcreated\033[0m\n"
 
 clean:
-	@rm -rf *.o ush.dSYM
-	@make clean -C libmx
+	@rm -rf $(OBJ_DIR)
+	@make clean -sC $(LMX_DIR)
+	@printf "$(OBJ_DIR)-dir in $(LMX_DIR) \033[31;1mdeleted\033[0m\n"
+	@printf "$(OBJ_DIR)-dir in $(NAME) \033[31;1mdeleted\033[0m\n"
 
-uninstall: clean
-	@make uninstall -C libmx
-	@make clean
-	@rm -rf ./obj
+uninstall:
+	@make -sC $(LMX_DIR) $@
+	@rm -rf $(OBJ_DIR)
 	@rm -rf $(NAME)
+	@printf "libmx \033[31;1muninstalled\033[0m\n"
+	@printf "$(NAME) \033[31;1muninstalled\033[0m\n"
 
-reinstall: uninstall install
-
-d:
-	@clang $(FLAGS) $(SANFLAG) src/*.c libmx/libmx.a -o ush --debug
+reinstall: uninstall all

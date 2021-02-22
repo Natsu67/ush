@@ -1,34 +1,27 @@
-NAME = libmx.a
+SRC_FILES = $(wildcard src/*.c)
+OBJ_FILES = $(addprefix obj/, $(notdir $(SRC_FILES:%.c=%.o)))
+INC_FILES = $(wildcard inc/*.h)
 
-INC = inc/libmx.h
-SRC := $(wildcard src/*.c)
-OBJ = $(addprefix obj/, $(notdir $(SRC:%.c=%.o)))
-FLAGS = -std=c11 -Wall -Wextra -Werror -Wpedantic
+CFLAGS = -std=c11 -Wall -Wextra -Werror -Wpedantic
 
-all: $(NAME)
+all: LIBMX
 
-install: $(NAME)
-
-$(NAME): $(OBJ)
-	@make clean
-	@ar -rcs $(NAME) $(OBJ)
-	@printf "\x1b[32;1m$@ created\x1b[0m\n"
-
-$(OBJ): | obj
-
+LIBMX: $(OBJ_FILES)
+	@ar rcs libmx.a $^
+	@printf "\r\33[2K$@\t \033[32;1mcreated\033[0m\n"
+$(OBJ_FILES): obj 
 obj:
-	@mkdir obj
-
-obj/%.o: src/%.c $(INC)
-	@clang $(FLAGS) -c $< -o $@
-	@printf "\x1b[32mcompiled: \x1b[0m[libmx/$<]\n"
-
-uninstall:
-	@make clean
-	@rm -rf ./obj
-	@rm -rf $(NAME)
-
+	@mkdir -p $@
+obj/%.o: src/%.c $(INC_FILES)
+	clang $(CFLAGS) -c $< -o $@ -I inc
+	@printf "\r\33[2K$(NAME)\033[33;1m\t compile \033[0m$(<:src/%.c=%)\r"
 clean:
-	@rm -rf *.o
+	@rm -rf obj $@
+	@rm -rf $(OBJ_FILES) $@	
+	@printf "obj in $(NAME)\t \033[31;1mdeleted\033[0m\n"
+uninstall: clean
+	@rm -rf libmx.a
+	@@printf "$(NAME)\t \033[31;1muninstalled\033[0m\n"
+reinstall: uninstall all
 
-reinstall: uninstall install
+.PHONY: all uninstall clean reinstall
