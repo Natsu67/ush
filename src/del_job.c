@@ -1,28 +1,28 @@
 #include "../inc/ush.h"
 
-static void plus_on_min(t_jobs **j, char a) {
+static void plus_on_min(t_jobs **j, char sign) {
     t_jobs *job = *j;
-    int ind = -1;
+    int index = -1;
 
-    if (a == '+') {
-        for ( ; job; job=job->next) {
+    if (sign == '+') {
+        for ( ; job; job = job->next) {
             if (job->sign == '-') {
                 job->sign = '+';
-                ind = job->index - 1;
+                index = job->index - 1;
             }
-            if (job->index == ind)
-                job->sign = '-';
+            if (job->index == index) job->sign = '-';
         }
     }
-    if (a == '-') {
-        for ( ; job; job=job->next) {
+
+    if (sign == '-') {
+        for ( ; job; job = job->next) {
             if (job->sign == '+') {
-                ind = job->index - 1;
+                index = job->index - 1;
             }
-            if (job->index == ind)
-                job->sign = '-';
+            if (job->index == index) job->sign = '-';
         }
     }
+
 }
 
 static void reload(pid_t pid, char **args, t_jobs **jobs) {
@@ -30,15 +30,19 @@ static void reload(pid_t pid, char **args, t_jobs **jobs) {
 
     tcsetpgrp(0, pid);
     tcsetpgrp(1, pid);
+
     kill(-pid, SIGCONT);
     waitpid(-pid, &status, WUNTRACED);
+
     tcsetpgrp(0, getpid());
     tcsetpgrp(1, getpid());
+
     if (WIFSTOPPED(status)) {
         mx_add_job(jobs, args, pid);
     }
     if (args != NULL)
         mx_del_strarr(&args);
+
     errno = 0;
 }
 
@@ -54,12 +58,13 @@ static void del_body(t_jobs **jobs, t_jobs **first) {
         j->next = del->next;
     del->next = NULL;
     sign = del->sign;
+
     mx_free_jobs(&del);
     plus_on_min(jobs, sign);
     reload(pid, data, first);
 }
 
-static void forever_alone(t_jobs **jobs, t_jobs **f, char **data) {
+static void del_if_one(t_jobs **jobs, t_jobs **f, char **data) {
     t_jobs *j = *jobs;
     char sign = '\0';
     int pid = j->pid;
@@ -67,12 +72,14 @@ static void forever_alone(t_jobs **jobs, t_jobs **f, char **data) {
     if (j->data != NULL) 
         mx_del_strarr(&j->data);
     mx_strdel(&j->pwd);
+
     j->data = NULL;
     j->num = -1;
     j->pid = -1;
     j->index = 0;
     sign = j->sign;
     j->sign = '\0';
+
     plus_on_min(jobs, sign);
     reload(pid, data, f);
 }
@@ -86,8 +93,8 @@ void mx_del_job(t_jobs **jobs, int flag, t_jobs **first) {
     
     if (flag == 1) {
         data = mx_copy_dub_arr(j->data);
-        if (j->next == NULL) //когда один остается
-            forever_alone(jobs, first, data);
+        if (j->next == NULL)
+            del_if_one(jobs, first, data);
         else {
             j->next = NULL;
             sign = j->sign;
@@ -98,6 +105,5 @@ void mx_del_job(t_jobs **jobs, int flag, t_jobs **first) {
             reload(pid, data, first);
         }
     }
-    if (flag == 2) //тело
-        del_body(jobs, first);
+    if (flag == 2) del_body(jobs, first);
 }
