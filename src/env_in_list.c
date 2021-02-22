@@ -11,7 +11,7 @@ static bool change_var(t_list **env_set, char *src) {
     for( ; tmp; tmp = tmp->next) { //заменить
         if (mx_get_substr_index(tmp->data, t_var[0]) >= 0) {
             t_set = mx_strsplit(tmp->data, '=');
-            if (mx_strcmp_null(t_set[0], t_var[0]) == 0) { //t_var[1] != NULL
+            if (mx_strcmp(t_set[0], t_var[0]) == 0) { //t_var[1] != NULL
                 free(tmp->data);
                 tmp->data = mx_strdup(src);
                 mx_del_strarr(&t_set);

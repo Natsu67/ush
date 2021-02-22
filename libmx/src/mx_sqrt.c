@@ -1,14 +1,19 @@
-int mx_sqrt(int x) {
-    int half = x / 2;
+#include "../inc/libmx.h"
 
-    if (x < 0)
-        return 0;
-    if (x == 0 || x == 1)
-        return x;
-    for (int i = 2; i <= half && i < 46341; i++) {
-        if (i * i == x) {
-            return i;
-        }
+int mx_sqrt(int x){
+    float temp = 0;
+    float sqrt = x/2;
+    if (x <= 0) return 0;
+    
+    while (sqrt != temp)
+    {
+        temp = sqrt;
+        sqrt = (x/temp + temp)/2;
     }
-    return 0;
+
+    if (sqrt - (int)sqrt == 0){
+        return sqrt;
+    } else  {
+        return 0;
+    }
 }

@@ -65,7 +65,7 @@ char *mx_get_subst_outputs(char *str, t_ush *ush) {
         return NULL;
     }
     for (char **s = subcommands; *s; s++) {
-        sum_output = mx_cooljoin(sum_output, process_output(*s,
+        sum_output = mx_strjoin(sum_output, process_output(*s,
                                  mx_parse_exec, ush));
     }
     if (!sum_output)

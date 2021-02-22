@@ -10,7 +10,7 @@ static bool check(char **args) {
         for (int i = 0; environ[i]; i++) {
             if (mx_get_substr_index(environ[i], "PATH") >= 0) {
                 tmp = mx_strsplit(environ[i], '=');
-                if (mx_strcmp_null(tmp[0], "PATH") == 0) {
+                if (mx_strcmp(tmp[0], "PATH") == 0) {
                 mx_del_strarr(&tmp);
                 return true;
                 }

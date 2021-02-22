@@ -8,7 +8,7 @@ int mx_ush_exit(char **args, t_ush *ush){
         return 1;
     }
     else {
-        ush->exit = mx_atoi(args[1]);
+        ush->exit = atoi(args[1]);
         if (ush->exit < 0) 
             ush->exit = 256 + ush->exit;
         if (ush->exit >= 256) {
