@@ -68,6 +68,17 @@ static int check_args(char ***args, t_env *env, char ***environ) {
     return 0;
 }
 
+int mx_env_print() {
+    extern char **environ;
+
+    for (int i = 0; environ[i]; i++) {
+        mx_printerror(environ[i]);
+        mx_printerror("\n");
+    }
+    
+    return 0;
+}
+
 int mx_ush_env(char **args, t_jobs **jobs) {
     extern char **environ;
     t_env *env = (t_env *)malloc(7 * sizeof(t_env));

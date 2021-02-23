@@ -6,14 +6,13 @@ static char optchar(char *optstring, bool *wordbeg, char **c) {
             *c = NULL;
             *wordbeg = 1;
             return -1;
-        }
-        else if (!*(++(*c))) {
+        } else if (!*(++(*c))) {
             *c = NULL;
             *wordbeg = 1;
             return -1;
-        }
-        else
+        } else {
             *wordbeg = 0;
+        }
     }
     if (mx_get_char_index(optstring, **c) == -1) {
         *c = NULL;

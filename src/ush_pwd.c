@@ -9,6 +9,9 @@ int mx_ush_pwd(char **args, t_ush *ush) {
         write(1, "\n", 1);
         free(pwd);
         return 0;
+    } else if(args[1] != NULL) {
+        write(2, "pwd: too many arguments\n", 24);
+        return 0;
     }
     m = mx_strsplit(ush->pwd, '/');
     if (m[0] == NULL)

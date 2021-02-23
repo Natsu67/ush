@@ -9,14 +9,12 @@ static bool replaced_escaped_hex(char *s) {
         s[1] = M_SKP;
         if ((isdigit(s[2]) || (s[2] >= 97 && s[2] <= 102))) {
             width++;
-            if ((isdigit(s[3]) || (s[3] >= 97 && s[3] <= 102)))
-                width++;
+            if ((isdigit(s[3]) || (s[3] >= 97 && s[3] <= 102))) width++;
         }
         if (width) {
             strncpy(buf, s + 2, width);
             sscanf(buf, "%hhx", s + 2);
-            if (width == 2)
-                s[3] = M_SKP;
+            if (width == 2) s[3] = M_SKP;
         }
         return 1;
     } 
@@ -30,15 +28,12 @@ static bool replaced_escaped_octal(char *s) {
     if (s[1] == '0') {
         s[0] = M_SKP;
         s[1] = M_SKP;
-        for (int i = 2; i <= 4 && s[i] >= 48 && s[i] <= 55; i++)
-            width++;
+        for (int i = 2; i <= 4 && s[i] >= 48 && s[i] <= 55; i++) width++;
         if (width) {
             strncpy(buf, s + 2, width);
             sscanf(buf, "%hho", s + 2);
-            if (width >= 2)
-                s[3] = M_SKP;
-            if (width == 3)
-                s[4] = M_SKP;
+            if (width >= 2) s[3] = M_SKP;
+            if (width == 3) s[4] = M_SKP;
         }
         return 1;
     } 
@@ -67,9 +62,7 @@ static int replace_special_chars(char **str, bool *flags) {
 
     if (!flags[ECHO_NOSPEC] || flags[ECHO_SPEC]) {
         for (char *s = *str; (s = strchr(s, '\\')); s++) {
-            if ((result = replaced_escaped_smbl(s))
-                || (result = replaced_escaped_octal(s))
-                || (result = replaced_escaped_hex(s))) {
+            if ((result = replaced_escaped_smbl(s)) || (result = replaced_escaped_octal(s)) || (result = replaced_escaped_hex(s))) {
                 if (result == -1) {
                     tmp = *str;
                     *str = strdup(*str);
@@ -90,16 +83,15 @@ int mx_ush_echo(char **argv) {
     int optind = 1;
     char optchar;
     
-    while (argv[argc])
-        argc++;
-    while ((optchar = mx_getopt(argc, argv, "neE", &optind)) != -1
-           && optchar != '?')
+    while (argv[argc]) argc++;
+
+    while ((optchar = mx_getopt(argc, argv, "neE", &optind)) != -1 && optchar != '?')
         flags[mx_get_char_index("neE", optchar)] = 1;
+        
     for (char **p = argv + optind; *p; p++) {
         if (replace_special_chars(p, flags) == -1)
             return 0;
     }
-    if (!flags[ECHO_NONL])
-        printf("\n");
+    if (!flags[ECHO_NONL]) printf("\n");
     return 0;
 }
