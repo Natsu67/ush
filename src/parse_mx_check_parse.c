@@ -8,5 +8,6 @@ bool mx_check_parse(char *str) {
         return 0;
     }
     mx_free_format_lists(arr);
+    
     return 1;
 }
