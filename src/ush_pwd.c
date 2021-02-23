@@ -2,7 +2,7 @@
 
 int mx_ush_pwd(char **args, t_ush *ush) {
     char *pwd = getcwd(NULL, 0);
-    char **m = NULL;
+    char **splitted_path = NULL;
 
     if (args[1] != NULL && !strcmp(args[1], "-P")) {
         write(1, pwd, strlen(pwd));
@@ -13,15 +13,14 @@ int mx_ush_pwd(char **args, t_ush *ush) {
         write(2, "pwd: too many arguments\n", 24);
         return 0;
     }
-    m = mx_strsplit(ush->pwd, '/');
-    if (m[0] == NULL)
+    splitted_path = mx_strsplit(ush->pwd, '/');
+    if (splitted_path[0] == NULL) mx_printstr("/");
+    else for (int i = 0; splitted_path[i]; i++){
         mx_printstr("/");
-    else for (int i = 0; m[i]; i++){
-        mx_printstr("/");
-        mx_printstr(m[i]);
+        mx_printstr(splitted_path[i]);
     }
     write(1, "\n", 1);
-    mx_del_strarr(&m);
+    mx_del_strarr(&splitted_path);
     free(pwd);
     return 0;
 }
