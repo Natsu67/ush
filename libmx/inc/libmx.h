@@ -35,6 +35,11 @@ char *mx_strchr(const char *s, int c);
 int mx_strncmp(const char *s1, const char *s2, int n); 
 
 //////////String pack////////////////
+typedef struct s_substr_replace {
+    char *str;
+    char *replace;
+} t_swap_strings;
+void mx_printerror(const char *s);
 int mx_strlen(const char *s);////////100///////++++++
 void mx_swap_char(char *s1, char *s2);////////100///////++++++
 void mx_str_reverse(char *s);//////80????/////++++

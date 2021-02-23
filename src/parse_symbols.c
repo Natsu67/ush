@@ -7,10 +7,12 @@ int mx_check_double_quote(char *s, int *i, t_frmt_lst **arr) {
         if (arr[TDOL_CMD]) {
             if (arr[TDBL_Q]->data->start > arr[TDOL_CMD]->data->start) mx_push_format(arr + DBL_Q, arr[TDBL_Q]->data->start, *i, arr + TDBL_Q);
             else mx_push_format(arr + TDBL_Q, *i, -1, NULL);
+        } else {
+            mx_push_format(arr + DBL_Q, arr[TDBL_Q]->data->start, *i, arr + TDBL_Q);
         }
-        else mx_push_format(arr + DBL_Q, arr[TDBL_Q]->data->start, *i, arr + TDBL_Q);
+    } else {
+        mx_push_format(arr + TDBL_Q, *i, -1, NULL);
     }
-    else mx_push_format(arr + TDBL_Q, *i, -1, NULL);
 
     return 0;
 }

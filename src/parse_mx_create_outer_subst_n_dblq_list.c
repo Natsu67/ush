@@ -34,13 +34,10 @@ void mx_create_outer_subst_n_dblq_list(char *s, t_frmt_lst **arr) {
     t_range *range = NULL;
 
     for (int i = 0; s[i]; i++) {
-        if ((s[i] == '$' || s[i] == '`') && (range = is_subst(arr, i, &type))
-            && is_outer(i, arr)) {
+        if ((s[i] == '$' || s[i] == '`') && (range = is_subst(arr, i, &type)) && is_outer(i, arr)) {
             mx_push_back_format(arr + OUT_SUB, range->start, range->end, NULL);
             i = range->end;
-        }
-        else if (s[i] == M_SKP && (range = is_dble_q(arr, i))
-                 && is_outer(i, arr)) {
+        } else if (s[i] == M_SKP && (range = is_dble_q(arr, i))  && is_outer(i, arr)) {
             mx_push_back_format(arr + OUT_DBQ, range->start, range->end, NULL);
         }
     }

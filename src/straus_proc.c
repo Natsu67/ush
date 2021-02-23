@@ -1,6 +1,6 @@
 #include "../inc/ush.h"
 
-static int wife_check(char **args, t_jobs **jobs, int status, pid_t pid) {
+static int check(char **args, t_jobs **jobs, int status, pid_t pid) {
     tcsetpgrp(0, getpid());
     tcsetpgrp(1, getpid());
     if (WIFSTOPPED(status)) {
@@ -35,5 +35,5 @@ int mx_straus_proc(char **args, t_jobs **jobs) {
     } else {
         waitpid(pid, &status, WUNTRACED);
     }
-    return wife_check(args, jobs, status, pid);
+    return check(args, jobs, status, pid);
 }
