@@ -6,14 +6,14 @@ static t_hst *create_h(char *data) {
     h->data = mx_strdup(data);
     h->next = NULL;
     h->prev = NULL;
+
     return h;
 }
 
 void mx_push_f(t_hst **hs, char *data) {
     t_hst *p = *hs;
     
-    if (p == NULL)
-        *hs = create_h(data);
+    if (p == NULL) *hs = create_h(data);
     else {
         p->prev = create_h(data);
         p->prev->next = p;
