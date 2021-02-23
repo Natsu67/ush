@@ -20,7 +20,7 @@ static bool check(char **args) {
     return false;
 }
 
-int builtin(char **args, t_ush *ush) {
+static int builtin(char **args, t_ush *ush) {
     if (!strcmp(args[0], "echo")) return mx_ush_echo(args);
 
     if (!strcmp(args[0], "cd") || !strcmp(args[0], "chdir")) return mx_ush_cd(args, ush);
@@ -56,7 +56,7 @@ int mx_detect_builds(char **args, t_ush *ush) {
 
     bins = mx_detect_exp(args, ush->hist, &ush->env_set);
     if (bins != 3) return bins;
-    else if (check(args)) return mx_straus_proc(args, &ush->jobs);
+    else if (check(args)) return mx_status_proc(args, &ush->jobs);
     
     return mx_not_found(args[0], "ush: command");
 }

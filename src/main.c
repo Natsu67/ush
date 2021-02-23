@@ -7,13 +7,13 @@ static void start_main_loop(t_ush *ush) {
 
     mx_signal_ignore();
     while (1) {
-        mx_enable_canon();
+        mx_enable_canonic_mode();
         mx_printstr("u$h> ");
         line = mx_read_stream(ush, ush->hist);
         write (1, "\n", 1);
         if (line != NULL && mx_strlen(line) > 0) {
-            mx_push_front_hst(&ush->hist, line);
-            mx_disable_canon();
+            mx_push_front_history(&ush->hist, line);
+            mx_disable_canonic_mode();
             mx_parse(line, ush);
         }
         if (ush->exit >= 0) break;
@@ -70,7 +70,7 @@ int main(void) {
         mx_setup_term(ush);
         start_main_loop(ush);
         exit_index = ush->exit;
-        mx_free_hst(&ush->hist);
+        mx_free_history(&ush->hist);
     } else {
         pipe_call(ush);
     }

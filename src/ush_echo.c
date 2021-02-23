@@ -40,7 +40,7 @@ static bool replaced_escaped_octal(char *s) {
     return 0;
 }
 
-int replaced_escaped_smbl(char *s) {
+static int replaced_escape_symbol(char *s) {
     int ind;
 
     if (s[1] == 'c') {
@@ -62,7 +62,7 @@ static int replace_special_chars(char **str, bool *flags) {
 
     if (!flags[ECHO_NOSPEC] || flags[ECHO_SPEC]) {
         for (char *s = *str; (s = strchr(s, '\\')); s++) {
-            if ((result = replaced_escaped_smbl(s)) || (result = replaced_escaped_octal(s)) || (result = replaced_escaped_hex(s))) {
+            if ((result = replaced_escape_symbol(s)) || (result = replaced_escaped_octal(s)) || (result = replaced_escaped_hex(s))) {
                 if (result == -1) {
                     tmp = *str;
                     *str = strdup(*str);

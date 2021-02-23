@@ -125,3 +125,23 @@ t_jobs *mx_create_job(char **data, int num, pid_t pid, char *pwd) {
     return job;
 }
 
+void mx_free_jobs(t_jobs **jobs) {
+    t_jobs *temp_jobs = *jobs;
+
+    while(temp_jobs) {
+        t_jobs *tmp_parent = temp_jobs->next;
+
+        if (temp_jobs->data != NULL) mx_del_strarr(&temp_jobs->data);
+        mx_strdel(&temp_jobs->pwd);
+
+        temp_jobs->data = NULL;
+        temp_jobs->num = 0;
+        temp_jobs->pid = 0;
+        temp_jobs->index = 0;
+        temp_jobs->sign = '\0';
+        
+        free(temp_jobs);
+        temp_jobs = NULL;
+        temp_jobs = tmp_parent;
+    }
+}

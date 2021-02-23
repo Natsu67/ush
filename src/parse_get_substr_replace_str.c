@@ -1,6 +1,6 @@
 #include "../inc/ush.h"
 
-static char *param_dollar_expansion(char **str, t_frmt_lst *list, t_ush *ush) {
+static char *dollar_expansion(char **str, t_frmt_lst *list, t_ush *ush) {
     char *replace = NULL;
     char *buf = NULL;
 
@@ -14,7 +14,7 @@ static char *param_dollar_expansion(char **str, t_frmt_lst *list, t_ush *ush) {
     return replace;
 }
 
-static char *param_dollar_braces_expansion(char **str, t_frmt_lst *list, t_ush *ush) {
+static char *dollar_braces_expansion(char **str, t_frmt_lst *list, t_ush *ush) {
     char *replace = NULL;
     char *buf = NULL;
 
@@ -58,8 +58,8 @@ char *mx_get_subst_replace_str(char **str, t_frmt_lst *list, t_ush *ush) {
         unslash_str(&replace);
     }
     else if ((*str)[list->data->start + 1] == '(') replace = strndup(*str + list->data->start + 2, list->data->end - list->data->start - 2);
-    else if ((*str)[list->data->start + 1] == '{') replace = param_dollar_braces_expansion(str, list, ush);
-    else replace = param_dollar_expansion(str, list, ush);
+    else if ((*str)[list->data->start + 1] == '{') replace = dollar_braces_expansion(str, list, ush);
+    else replace = dollar_expansion(str, list, ush);
 
     if (!replace) replace = calloc(1, 1);
 

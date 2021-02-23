@@ -50,7 +50,7 @@ static char *process_output(char *str, int (*parse_p)(char *, t_ush *), t_ush *u
         dup2(pipe_p[1], 1);
         close(pipe_p[1]);
         if (parse_p(str, ush) == -1) {
-            fprintf(stderr, MX_ERR_PARSE_CMDSBN);
+            fprintf(stderr, "ush: parse error in command substitution\n");
             exit(1);
         }
         exit(0);

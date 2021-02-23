@@ -20,8 +20,8 @@
 - [x] mx_canon.c 
 - [x] mx_create_job.c
 - [ ] mx_getopt.c 
-- [ ] mx_pop_frontf.c
-- [ ] mx_push_backdup.c
+- [ ] mx_pop_front_list.c
+- [ ] mx_push_back_list.c
 - [ ] mx_setup_term.c 
 - [x] mx_signal.c
 - [ ] mx_strpart.c 

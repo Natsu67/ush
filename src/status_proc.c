@@ -17,7 +17,7 @@ static int check(char **args, t_jobs **jobs, int status, pid_t pid) {
     return status;
 }
 
-int mx_straus_proc(char **args, t_jobs **jobs) {
+int mx_status_proc(char **args, t_jobs **jobs) {
     pid_t pid;
     int status = 0;
 

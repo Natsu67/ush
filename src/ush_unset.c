@@ -10,7 +10,7 @@ static void var_unset(t_list **env_set, int count, t_list **b) {
             front = mx_create_node(NULL);
             *env_set = front;
         }
-        else mx_pop_frontf(env_set);
+        else mx_pop_front_list(env_set);
         return;
     }
     for (int i = 0; i < count - 1; i++) front = front->next;

@@ -1,6 +1,6 @@
 #include "../inc/ush.h"
 
-char **contains_var(char *var, char *temp) {
+static char **contains_var(char *var, char *temp) {
     char **a;
     char **b;
     char **res = NULL;
@@ -26,7 +26,7 @@ char **contains_var(char *var, char *temp) {
     return res;  
 }
 
-int find_exp_h(char *str, char *var, t_list **env_set) {
+static int find_exp_h(char *str, char *var, t_list **env_set) {
     char **temp = NULL;
     int res = 0;
     int flag = 0;
@@ -72,7 +72,7 @@ static bool global_set(char *args) {
     return false;
 }
 
-int mx_detect_exp(char **proc, t_hst *start_h, t_list **env_set) {
+int mx_detect_exp(char **proc, t_history *start_h, t_list **env_set) {
     int temp;
 
     if(proc[0][0] == '=') return 3;
@@ -81,7 +81,7 @@ int mx_detect_exp(char **proc, t_hst *start_h, t_list **env_set) {
 
         mx_env_in_list(env_set, proc[0]);
 
-        for (t_hst *h = start_h; h; h = h->next) {
+        for (t_history *h = start_h; h; h = h->next) {
 
             if (global_set(proc[0])) return 0;
 

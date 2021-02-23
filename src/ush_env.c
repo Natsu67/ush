@@ -72,8 +72,8 @@ int mx_env_print() {
     extern char **environ;
 
     for (int i = 0; environ[i]; i++) {
-        mx_printerror(environ[i]);
-        mx_printerror("\n");
+        mx_printerr(environ[i]);
+        mx_printerr("\n");
     }
     
     return 0;
@@ -96,7 +96,7 @@ int mx_ush_env(char **args, t_jobs **jobs) {
     else for ( ; *args && mx_get_char_index(*args, '=') > -1; args++)
         putenv(*args);
     if (*args)
-        status = mx_straus_proc(args, jobs);
+        status = mx_status_proc(args, jobs);
     else for (int i = 0; environ[i]; i++)
         printf("%s\n", environ[i]);
     e_work(&environ, env);

@@ -42,7 +42,7 @@ int mx_handle_substitutions(char **str, t_frmt_lst **arr, t_ush *ush) {
     char *replace = NULL;
     char *process_out = NULL;
 
-    mx_create_outer_subst_n_dblq_list(*str, arr);
+    mx_create_outer_substr(*str, arr);
     for (t_frmt_lst *lst; (lst = arr[OUT_SUB]); mx_pop_format(arr + OUT_SUB)) {
         replace = mx_get_subst_replace_str(str, lst, ush);
         if ((*str)[lst->data->start] == '`' || (*str)[lst->data->start + 1] == '(') {
