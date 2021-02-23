@@ -12,7 +12,7 @@ static void start_main_loop(t_ush *ush) {
         line = mx_read_stream(ush, ush->hist);
         write (1, "\n", 1);
         if (line != NULL && mx_strlen(line) > 0) {
-            mx_push_f(&ush->hist, line);
+            mx_push_front_hst(&ush->hist, line);
             mx_disable_canon();
             mx_parse(line, ush);
         }
