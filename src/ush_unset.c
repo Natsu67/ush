@@ -10,9 +10,8 @@ static void uns_var(t_list **env_set, int count, t_list **b) {
             front = mx_create_node(NULL);
             *env_set = front;
         }
-        else
-            mx_pop_frontf(env_set);
-        return ;
+        else mx_pop_frontf(env_set);
+        return;
     }
     for (int i = 0; i < count - 1; i++)
         front = front->next;
@@ -21,58 +20,59 @@ static void uns_var(t_list **env_set, int count, t_list **b) {
     mx_free_list(&back);
 }
 
-static bool coi(t_list **env, t_list **n, int count, char **tmp) {
+static int coi(t_list **env, t_list **n, int count, char **temp) {
     char **sub = NULL;
     t_list *f = *n;
 
     sub =  mx_strsplit(f->data, '=');
-    if (mx_strcmp(sub[0], tmp[0]) == 0) {
+    if (mx_strcmp(sub[0], temp[0]) == 0) {
         uns_var(env, count, &f);
-        unsetenv(tmp[0]);
+        unsetenv(temp[0]);
         mx_del_strarr(&sub);
         return true;
     }
     mx_del_strarr(&sub);
-    return false;
+    return 0;
 }
 
 
-static bool global_set(char *args) {
+static int global_set(char *args) {
     extern char **environ;
-    char **tmp = NULL;
+    char **temp = NULL;
 
     for (int i = 0; environ[i]; i++) {
         if (mx_get_substr_index(environ[i], args) >= 0) {
-            tmp = mx_strsplit(environ[i], '=');
-            if (mx_strcmp(tmp[0], args) == 0) {
-               unsetenv(tmp[0]); 
-               mx_del_strarr(&tmp);
+            temp = mx_strsplit(environ[i], '=');
+            if (mx_strcmp(temp[0], args) == 0) {
+               unsetenv(temp[0]); 
+               mx_del_strarr(&temp);
                return true;
             }
-            mx_del_strarr(&tmp);
+            mx_del_strarr(&temp);
         }
     }
-    return false;
+    return 0;
 }
 
 int mx_ush_unset(char **args, t_list **env_set) {
-    char **tmp = NULL;
+    char **temp = NULL;
     int count;
-    t_list *f = *env_set;
+    t_list *list = *env_set;
 
-    for (int i = 1; args[i]; i++) {
-        tmp = mx_strsplit(args [i], '=');
+    args++;
+    while(*args) {
+        temp = mx_strsplit(*args, '=');
         count = 0;
 
-        if (!global_set(tmp[0]) && (f != NULL && f->data != NULL)) {
-            for ( ; f; f = f->next, count++) {
-                if (mx_get_substr_index(f->data, tmp[0]) >= 0) {
-                    if (coi(env_set, &f, count, tmp))
-                        break ;
-                } 
+        if (!global_set(temp[0]) && (list != NULL && list->data != NULL)) {
+            while(list) {
+                if (mx_get_substr_index(list->data, temp[0]) >= 0 && coi(env_set, &list, count, temp)) break;
+                list = list->next;
+                count++;
             }
         }
-        mx_del_strarr(&tmp);
+        mx_del_strarr(&temp);
+        args++;
     }
     return 1;
 }
