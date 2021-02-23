@@ -34,20 +34,20 @@ static int check_if_builtin(char *argument) {
 
 int mx_ush_which(char **args) {
     int flag = 0;
-    
+
     if (args[1] == NULL) return 1;
     if (strcmp(args[1], "-a") == 0) {
         flag = 1;
         args++;
-    }
-    if (strcmp(args[1], "-s") == 0) {
+    } else if (strcmp(args[1], "-s") == 0) {
         flag = 2;
         args++;
     }
-    
     args++;
     int is_access = 0;
+    
     while(*args) {
+        
         is_access = 0;
         if (check_if_builtin(*args)) {
             is_access = check_access(*args, flag);
