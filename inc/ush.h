@@ -217,4 +217,5 @@ int mx_name_search(char *tmp , t_jobs *jobs);
 int mx_ush_jobs(char **args, t_jobs **jobs);
 int mx_env_print(void);
 void mx_signal_def();
+void mx_signal_reload();
 char *gogo(char *newpwd, char **m, t_cd *in);

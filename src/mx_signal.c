@@ -14,6 +14,12 @@ void mx_signal_ignore() {
     signal(SIGTTOU, SIG_IGN);
 }
 
+void mx_signal_reload() {
+    signal(SIGTSTP, SIG_DFL);
+    signal(SIGINT, SIG_DFL);
+    signal(SIGTTIN, SIG_DFL);
+}
+
 void mx_init_signals() {
     sigset_t mask;
 
