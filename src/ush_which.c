@@ -49,7 +49,6 @@ int mx_ush_which(char **args) {
     int is_access = 0;
     
     while(*args) {
-        
         is_access = 0;
         if (check_if_builtin(*args)) {
             is_access = check_access(*args, flag);
