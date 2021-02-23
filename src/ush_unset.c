@@ -1,6 +1,6 @@
 #include "../inc/ush.h"
 
-static void uns_var(t_list **env_set, int count, t_list **b) {
+static void var_unset(t_list **env_set, int count, t_list **b) {
     t_list *front = *env_set;
     t_list *back = *b;
 
@@ -13,20 +13,19 @@ static void uns_var(t_list **env_set, int count, t_list **b) {
         else mx_pop_frontf(env_set);
         return;
     }
-    for (int i = 0; i < count - 1; i++)
-        front = front->next;
+    for (int i = 0; i < count - 1; i++) front = front->next;
     front->next = back->next;
     back->next = NULL;
     mx_free_list2(&back);
 }
 
-static int coi(t_list **env, t_list **n, int count, char **temp) {
+static int list_unset(t_list **env, t_list **n, int count, char **temp) {
     char **sub = NULL;
     t_list *f = *n;
 
     sub =  mx_strsplit(f->data, '=');
     if (mx_strcmp(sub[0], temp[0]) == 0) {
-        uns_var(env, count, &f);
+        var_unset(env, count, &f);
         unsetenv(temp[0]);
         mx_del_strarr(&sub);
         return true;
@@ -46,7 +45,7 @@ static int global_set(char *args) {
             if (mx_strcmp(temp[0], args) == 0) {
                unsetenv(temp[0]); 
                mx_del_strarr(&temp);
-               return true;
+               return 1;
             }
             mx_del_strarr(&temp);
         }
@@ -66,7 +65,7 @@ int mx_ush_unset(char **args, t_list **env_set) {
 
         if (!global_set(temp[0]) && (list != NULL && list->data != NULL)) {
             while(list) {
-                if (mx_get_substr_index(list->data, temp[0]) >= 0 && coi(env_set, &list, count, temp)) break;
+                if (mx_get_substr_index(list->data, temp[0]) >= 0 && list_unset(env_set, &list, count, temp)) break;
                 list = list->next;
                 count++;
             }
