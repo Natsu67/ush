@@ -9,7 +9,7 @@ static t_hst *create_hst_node(char *data) {
     return hst;
 }
 
-void mx_push_f(t_hst **hst, char *data) {
+void mx_push_front_hst(t_hst **hst, char *data) {
     t_hst *tmp_hst = *hst;
     
     if (tmp_hst == NULL){

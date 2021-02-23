@@ -184,7 +184,7 @@ void mx_add_job(t_jobs **j, char **args, pid_t pid);
 t_jobs *mx_create_job(char **data, int num, pid_t pid, char *pwd);
 char **mx_copy_dub_arr(char **args);
 void mx_free_jobs(t_jobs **jobs);
-void mx_push_f(t_hst **hs, char *data);
+void mx_push_front_hst(t_hst **hs, char *data);
 int mx_ush_cd(char **args, t_ush *ush);
 int mx_ush_env(char **args, t_jobs **jobs);
 int mx_ush_exit(char **args, t_ush *ush);

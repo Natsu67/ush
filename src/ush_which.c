@@ -36,6 +36,7 @@ int mx_ush_which(char **args) {
     int flag = 0;
 
     if (args[1] == NULL) return 1;
+
     if (strcmp(args[1], "-a") == 0) {
         flag = 1;
         args++;
@@ -44,6 +45,7 @@ int mx_ush_which(char **args) {
         args++;
     }
     args++;
+
     int is_access = 0;
     
     while(*args) {
