@@ -20,7 +20,7 @@ static void start_main_loop(t_ush *ush) {
     }
     tcsetattr(0, TCSAFLUSH, &ush->savetty);
     mx_signal_def();
-    mx_free_list2(&ush->env_set);
+    mx_free_list(&ush->env_set);
 }
 
 static void pipe_call(t_ush *ush) {
@@ -34,7 +34,7 @@ static void pipe_call(t_ush *ush) {
         buf = 0;
     }
     mx_parse(line, ush);
-    mx_free_list2(&ush->env_set);
+    mx_free_list(&ush->env_set);
 }
 
 static void set_def_env(t_ush *ush) {
@@ -70,7 +70,7 @@ int main(void) {
         mx_setup_term(ush);
         start_main_loop(ush);
         exit_index = ush->exit;
-        mx_free_list(&ush->hist);
+        mx_free_hst(&ush->hist);
     } else {
         pipe_call(ush);
     }

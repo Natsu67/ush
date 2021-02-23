@@ -44,10 +44,10 @@ int mx_ush_which(char **args) {
         flag = 2;
         args++;
     }
-
     args++;
 
     int is_access = 0;
+    
     while(*args) {
         is_access = 0;
         if (check_if_builtin(*args)) {

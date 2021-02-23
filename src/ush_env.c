@@ -15,8 +15,7 @@ static char **env_copy(char **environ) {
 
 static int usage(int f, char *arg) {
     if (f == 1)
-        write(2, "usage: env [-iuP] [name=value ...] "
-                "[utility [argument ...]]\n", 60);
+        write(2, "usage: env [-iuP] [name=value ...] [utility [argument ...]]\n", 60);
     else {
         write(2, "env: '", 6);
         write(2, arg, mx_strlen(arg));
