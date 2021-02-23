@@ -1,9 +1,19 @@
 #include "../inc/ush.h"
 
 int mx_not_found(char *args, char *str) {
-    write(2, str, mx_strlen(str));
-    write(2, " not found: ", 12);
-    write(2, args, mx_strlen(args));
-    write(2, "\n", 1);
+    mx_printerr(str);
+    mx_printerr(" not found: ");
+    mx_printerr(args);
+    mx_printerr("\n");
     return 0;
+}
+
+int mx_no_such(char *name, char *args, char *str) {
+    mx_printerr(name);
+    mx_printerr(": ");
+    mx_printerr(args); 
+    mx_printerr(": no such  ");
+    mx_printerr(str);
+    mx_printerr("\n");
+    return 1;
 }

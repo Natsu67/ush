@@ -14,12 +14,12 @@ static char **env_copy(char **environ) {
 }
 
 static int usage(int f, char *arg) {
-    if (f == 1)
-        write(2, "usage: env [-iuP] [name=value ...] [utility [argument ...]]\n", 60);
-    else {
-        write(2, "env: '", 6);
-        write(2, arg, mx_strlen(arg));
-        write(2, "': No such file or directory\n", 29);
+    if (f == 1) {
+        mx_printerr("usage: env [-iuP] [name=value ...] [utility [argument ...]]\n");
+    } else {
+        mx_printerr("env: '");
+        mx_printerr(arg);
+        mx_printerr("': No such file or directory\n");
     }
     return 1;
 }

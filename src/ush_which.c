@@ -25,7 +25,8 @@ static int check_if_builtin(char *argument) {
 
     for (int i = 0; builtin[i]; i++) {
         if (strcmp(builtin[i], argument) == 0) {
-            printf("%s: ush built-in command\n", argument);
+            mx_printerr(argument);
+            mx_printerr(": ush built-in command\n");
             return 0;
         }
     }
@@ -54,7 +55,7 @@ int mx_ush_which(char **args) {
             is_access = check_access(*args, flag);
             if (is_access == 1 && flag != 2) {
                 mx_printstr(*args);
-                write(2, " not found\n", 11);
+                mx_printerr(" not found\n");
             }
         }
         args++;

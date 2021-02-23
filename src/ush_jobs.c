@@ -3,20 +3,20 @@
 static void print_sec(t_jobs *jobs, char *flags) {
     t_jobs *j = jobs;
 
-    write(1, " suspended  ", 12);
+    mx_printstr(" suspended  ");
     for (int k = 0; j->data[k]; k++) {
         write (1, j->data[k], mx_strlen (j->data[k]));
         if (j->data[k + 1])
-            write(1, " ", 1);
+            mx_printstr(" ");
     }
-    write(1, "\n", 1);
+    mx_printstr("\n");
     if (flags != NULL && mx_get_char_index(flags, 'd') > 0) {
-        write(1, "(pwd : ", 7);
+        mx_printstr("(pwd : ");
         if (mx_strcmp(j->pwd, getenv("HOME")) == 0)
-            write(1, "~", 1); 
+            mx_printstr("~"); 
         else
-            write(1, j->pwd, mx_strlen(j->pwd));
-        write(1, ")\n", 2);
+            mx_printstr(j->pwd);
+        mx_printstr(")\n");
     }
 }
 
@@ -27,19 +27,19 @@ static void print_job(t_jobs *jobs, int num, char *flags) {
         j = j->next;
         num--;
     }
-    write(1, "[", 1);
+    mx_printstr("[");
     mx_printint(j->num);
-    write(1, "]", 1);
-    write(1, "  ", 2);
+    mx_printstr("]");
+    mx_printstr("  ");
     if (j->sign == '+')
-        write(1, "+", 1);
+        mx_printstr("+");
     else if (j->sign == '-')
-        write(1, "-", 1);
+        mx_printstr("-");
     else
-       write(1, " ", 1);
+       mx_printstr(" ");
     if (flags != NULL && (mx_get_char_index(flags, 'l') > 0 
         || mx_get_char_index(flags, 'p') > 0)){
-        write(1, " ", 1);
+        mx_printstr(" ");
         mx_printint(j->pid);
     }
     print_sec(j, flags); 
@@ -50,9 +50,9 @@ static bool check_flag(char *args) {
             if (args[i] != 'd' && 
                 args[i] != 'p' && args[i] != 'l'
                     && args[i] != 's') {
-                        write(1, "jobs: bad option: -", 19);
+                        mx_printstr("jobs: bad option: -");
                         mx_printchar(args[i]);
-                        write(1, "\n", 1);
+                        mx_printstr("\n");
                         return false;
             }
         }
@@ -63,8 +63,7 @@ static int ch_job(char **args, t_jobs *jobs, int i, char *flags) {
     int ind;
     t_jobs *j = jobs;
 
-    if ((flags == NULL && args[1] != NULL) || (flags != NULL && args[2] != NULL)) { // если не нул
-        //write(1, "+++++\n", 6);
+    if ((flags == NULL && args[1] != NULL) || (flags != NULL && args[2] != NULL)) {
         for ( ; args[i]; i++) {
             ind = mx_name_search(args[i], jobs);
             if (ind == -1) {
@@ -74,7 +73,7 @@ static int ch_job(char **args, t_jobs *jobs, int i, char *flags) {
             print_job(jobs, ind, flags);
         }
     }
-    else { //если нул
+    else {
         i = 0;
         for( ; j; i++, j = j->next)
             print_job(jobs, i, flags);   

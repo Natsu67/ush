@@ -1,11 +1,11 @@
 #include "../inc/ush.h"
 
 static int false_cd(char *name, t_cd *num) {
-    if (num->error == 1) write(2, "cd: no such file or directory: ", 31);
-    else if (num->error  == 2) write(2, "cd: not a directory: ", 21);
-    else if (num->error == 4) write(2, "cd: permission denied: ", 23);
-    write(2, name, mx_strlen(name));
-    write(2, "\n", 1);
+    if (num->error == 1) mx_printerr("cd: no such file or directory: ");
+    else if (num->error  == 2) mx_printerr("cd: not a directory: ");
+    else if (num->error == 4) mx_printerr("cd: permission denied: ");
+    mx_printerr(name);
+    mx_printerr("\n");
     free(num->newpwd);
     free(num);
     errno = 0;

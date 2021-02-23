@@ -7,10 +7,10 @@ static char *hist_but(char *line, char *data, int *tmp) {
         (*tmp)--;
     }
     for (int i = 0; line != NULL && i < mx_strlen(line); i++) {
-        write(1, "\b \b", 3);
+        mx_printstr("\b \b");
     }
     mx_strdel(&line);
-    write(1, data, mx_strlen(data));
+    mx_printstr(data);
     line = mx_strdup(data);
     return line;
 }

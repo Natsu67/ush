@@ -25,7 +25,11 @@ static char *mark_sbst_output(char *str, bool in_quotes) {
     char *s;
     for (s = str + strlen(str) - 1; *s == '\n'; s--) *s = M_SKP;
 
-    if (in_quotes) return str;
+    if (!str || !*str) return str;
+
+    for (s = str + strlen(str) - 1; *s == '\n'; s--) *s = M_SKP;
+
+    if (in_quotes)  return str;
 
     for (s = str; *s && *s != M_SKP; s++) {
         if (MX_IS_SP_TAB_NL(*s)) *s = M_DEL;
@@ -44,7 +48,6 @@ int mx_handle_substitutions(char **str, t_frmt_lst **arr, t_ush *ush) {
         if ((*str)[lst->data->start] == '`' || (*str)[lst->data->start + 1] == '(') {
             process_out = mx_get_subst_outputs(replace, ush);
             if (!process_out) return -1;
-            
             free(replace);
             replace = mark_sbst_output(process_out, mx_is_inside_of(lst->data->start, OUT_DBQ, arr) ? 1 : 0);
         }

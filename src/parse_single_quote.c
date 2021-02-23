@@ -14,7 +14,7 @@ static int find_sin_q_pair(char *s, int *i, t_frmt_lst **arr) {
 
 int mx_check_single_quote(char *s, int *i, t_frmt_lst **arr) {
     if (s[*i] != '\'') return 1;
-
+    
     if (((arr[TDOL_CMD] && (!arr[TDBL_Q] || (arr[TDBL_Q]
         && arr[TDBL_Q]->data->start < arr[TDOL_CMD]->data->start)))
         || !arr[TDBL_Q]) && find_sin_q_pair(s, i, arr) < 0) {

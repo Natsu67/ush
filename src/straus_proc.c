@@ -1,15 +1,15 @@
 #include "../inc/ush.h"
 
-static int wife_check(char **args, t_jobs **jobs, int status, pid_t pid) {
+static int check(char **args, t_jobs **jobs, int status, pid_t pid) {
     tcsetpgrp(0, getpid());
     tcsetpgrp(1, getpid());
     if (WIFSTOPPED(status)) {
         status = 146;
         mx_add_job(jobs, args, pid);
-        write(1, "\n", 1);
+        mx_printstr("\n");
     } else if (WIFSIGNALED(status)) {
         status = 130;
-        write(1, "\n", 1);
+        mx_printstr("\n");
     } else if (WIFEXITED(status)) {
         status =  WEXITSTATUS(status);
     }
@@ -35,5 +35,5 @@ int mx_straus_proc(char **args, t_jobs **jobs) {
     } else {
         waitpid(pid, &status, WUNTRACED);
     }
-    return wife_check(args, jobs, status, pid);
+    return check(args, jobs, status, pid);
 }
