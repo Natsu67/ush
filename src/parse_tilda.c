@@ -11,11 +11,11 @@
     mx_del_strarr(arr);
 }*/
 
-static void no_such_user(char *tmp, char ***str_arr) {
+/*static void no_such_user(char *tmp, char ***str_arr) {
     fprintf(stderr, MX_ERR_PARSE_NO_SUCH_USER "%s\n", tmp);
     mx_del_strarr(str_arr);
     free(tmp);
-}
+}*/
 
 static int tilde(char **str, t_ush *ush) {
     char *res = NULL;
@@ -33,12 +33,15 @@ static int tilde(char **str, t_ush *ush) {
     } else if (strcmp(str_arr[0], "~") == 0){
         mx_replace_sub_str(str, 0, 0, ush->home);
     }
+
     if (!getpwnam((tmp = strndup(*str + 1, strlen(str_arr[0]) - 1)))) {
-        no_such_user(tmp, &str_arr);
+        fprintf(stderr, MX_ERR_PARSE_NO_SUCH_USER "%s\n", tmp);
+        mx_del_strarr(&str_arr);
+        free(tmp);
         return -1;
     }
-    mx_replace_sub_str(str, 0, strlen(tmp),
-        (res = mx_strjoin("/Users/", tmp)));
+
+    mx_replace_sub_str(str, 0, strlen(tmp), (res = mx_strjoin("/Users/", tmp)));
     mx_del_strarr(&str_arr);
     free(res);
     free(tmp);
