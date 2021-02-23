@@ -1,17 +1,16 @@
 #include "../inc/ush.h"
 
 void mx_pop_frontf(t_list **head) {
-    t_list *p;
-    t_list *t;
-
     if (head == NULL || *head == NULL) return;
 
-    p = *head;
-    t = p->next;
-    free(p->data);
-    p->data = NULL;
+    t_list *cpy_list, *tmp;
+
+    cpy_list = *head;
+    tmp = cpy_list->next;
+    free(cpy_list->data);
+    cpy_list->data = NULL;
     free(*head);
     
     *head = NULL;
-    *head = t;
+    *head = tmp;
 }

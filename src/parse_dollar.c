@@ -2,12 +2,12 @@
 
 static int brace_pair_cycle(char *s, int *i, int start, t_frmt_lst **arr) {
     for (; s[*i]; (*i)++) {
-        if (isalpha(s[*i]) || isdigit(s[*i])) continue;
-        else if (s[*i] == '}') {
+        if (isalpha(s[*i]) || isdigit(s[*i])) {
+            continue;
+        } else if (s[*i] == '}') {
             mx_push_back_format(arr + DOL_BP, start, *i, NULL);
             return 0;
-        }
-        else {
+        } else {
             fprintf(stderr, MX_ERR_PARSE_BADSBN);
             break;
         }
