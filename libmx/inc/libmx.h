@@ -39,7 +39,7 @@ typedef struct s_substr_replace {
     char *str;
     char *replace;
 } t_swap_strings;
-void mx_printerror(const char *s);
+void mx_printerr(const char *s);
 int mx_strlen(const char *s);////////100///////++++++
 void mx_swap_char(char *s1, char *s2);////////100///////++++++
 void mx_str_reverse(char *s);//////80????/////++++

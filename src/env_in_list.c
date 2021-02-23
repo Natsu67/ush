@@ -31,9 +31,9 @@ static bool change_var(t_list **env_set, char *src) {
 static bool f_case(char ***v) {
     char **var = *v;
 
-    write(2, "export: not valid in this context: ", mx_strlen("export: not valid in this context: "));
-    write(2, var[0], mx_strlen(var[0]));
-    write(2, "\n", 1);
+    mx_printerr("export: not valid in this context: ");
+    mx_printerr(var[0]);
+    mx_printerr("\n");
 
     mx_del_strarr(v);
     return false;
@@ -42,9 +42,9 @@ static bool f_case(char ***v) {
 static bool s_case(char ***v) {
     char **var = *v;
 
-    write(2, "export: not an identifier: ", mx_strlen("export: not an identifier: "));
-    write(2, var[0], mx_strlen(var[0]));
-    write(2, "\n", 1);
+    mx_printerr("export: not an identifier: ");
+    mx_printerr(var[0]);
+    mx_printerr("\n");
 
     mx_del_strarr(v);
     return false;
@@ -54,7 +54,7 @@ static bool var_check(char *src) {
     char **var = mx_strsplit(src, '=');
 
     if((var == NULL || var[0] == NULL) || src[0] == '=') {
-        write(1, "u$h: bad assignment\n", 20);
+        mx_printerr("ush: bad assignment\n");
         return false;
     }
 

@@ -1,5 +1,25 @@
 #include "../inc/ush.h"
 
+static void print_sec(t_jobs *jobs, char *flags) {
+    t_jobs *j = jobs;
+
+    mx_printstr(" suspended  ");
+    for (int k = 0; j->data[k]; k++) {
+        write (1, j->data[k], mx_strlen (j->data[k]));
+        if (j->data[k + 1])
+            mx_printstr(" ");
+    }
+    mx_printstr("\n");
+    if (flags != NULL && mx_get_char_index(flags, 'd') > 0) {
+        mx_printstr("(pwd : ");
+        if (mx_strcmp(j->pwd, getenv("HOME")) == 0)
+            mx_printstr("~"); 
+        else
+            mx_printstr(j->pwd);
+        mx_printstr(")\n");
+    }
+}
+
 static void print_job(t_jobs *jobs, int num, char *flags) {
     t_jobs *job = jobs;
   
@@ -47,10 +67,10 @@ static int change_job(char **args, t_jobs *jobs, int i, char *flags) {
     int id;
     t_jobs *job = jobs;
 
-    if (flags == NULL && args[1] != NULL || flags != NULL && args[2] != NULL) {
-        for (; args[i]; i++) {
-            id = mx_name_search(args[i], jobs);
-            if (id == -1) {
+    if ((flags == NULL && args[1] != NULL) || (flags != NULL && args[2] != NULL)) {
+        for ( ; args[i]; i++) {
+            ind = mx_name_search(args[i], jobs);
+            if (ind == -1) {
                 mx_not_found(args[i], "jobs: job");
                 return 1;
             }

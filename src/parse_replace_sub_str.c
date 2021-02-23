@@ -8,6 +8,7 @@ void mx_replace_sub_str(char **s, int start, int end, char *replace) {
     strncpy(new, *s, start);
     strcpy(new + start, replace);
     strcat(new + start, *s + end + 1);
+    
     free(*s);
     *s = new;
 }

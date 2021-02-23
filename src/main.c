@@ -8,7 +8,7 @@ static void start_main_loop(t_ush *ush) {
     mx_signal_ignore();
     while (1) {
         mx_enable_canon();
-        write(1, "u$h> ", mx_strlen("u$h> "));
+        mx_printstr("u$h> ");
         line = mx_read_stream(ush, ush->hist);
         write (1, "\n", 1);
         if (line != NULL && mx_strlen(line) > 0) {

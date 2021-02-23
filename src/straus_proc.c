@@ -6,10 +6,10 @@ static int check(char **args, t_jobs **jobs, int status, pid_t pid) {
     if (WIFSTOPPED(status)) {
         status = 146;
         mx_add_job(jobs, args, pid);
-        write(1, "\n", 1);
+        mx_printstr("\n");
     } else if (WIFSIGNALED(status)) {
         status = 130;
-        write(1, "\n", 1);
+        mx_printstr("\n");
     } else if (WIFEXITED(status)) {
         status =  WEXITSTATUS(status);
     }

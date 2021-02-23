@@ -5,8 +5,8 @@ int mx_ush_pwd(char **args, t_ush *ush) {
     char **splitted_path = NULL;
 
     if (args[1] != NULL && !strcmp(args[1], "-P")) {
-        write(1, pwd, strlen(pwd));
-        write(1, "\n", 1);
+        mx_printstr(pwd);
+        mx_printstr("\n");
         free(pwd);
         return 0;
     } else if(args[1] != NULL) {
@@ -19,8 +19,8 @@ int mx_ush_pwd(char **args, t_ush *ush) {
         mx_printstr("/");
         mx_printstr(splitted_path[i]);
     }
-    write(1, "\n", 1);
-    mx_del_strarr(&splitted_path);
+    mx_printstr("\n");
+    mx_del_strarr(&m);
     free(pwd);
     return 0;
 }
