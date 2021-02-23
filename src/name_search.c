@@ -7,11 +7,11 @@ int mx_name_search(char *tmp , t_jobs *jobs) {
     t_jobs *j = jobs;
     if (j->data != NULL) {
         while(j) {
-            if (mx_get_substr_index(j->data[0], tmp) == 0)
-                res = count;
+            if (mx_get_substr_index(j->data[0], tmp) == 0) res = count;
             j = j->next;
             count++;
         }
     }
+
     return res;
 }
