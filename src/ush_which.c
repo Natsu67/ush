@@ -57,6 +57,7 @@ int mx_ush_which(char **args) {
 
     int is_access = 0;
     int first = 1;
+    int bad_return = 0;
     while(*args) {
         is_access = 0;
         if (check_if_builtin(*args, flag)) {
@@ -64,10 +65,12 @@ int mx_ush_which(char **args) {
             if (is_access == 1 && (first || flag != 1)) {
                 mx_printstr(*args);
                 mx_printerr(" not found\n");
+                if (flag == 2) bad_return = 1;
             }
         }
         first = 0;
         args++;
     }
-    return 1;
+    if (bad_return) return 1;
+    else return 0;
 }
