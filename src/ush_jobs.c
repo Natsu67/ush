@@ -12,7 +12,7 @@ static void print_job(t_jobs *jobs, int num, char *flags) {
     mx_printstr("]  ");
     if (job->sign == '+' || job->sign == '-') mx_printchar(job->sign);
     else mx_printstr(" ");
-    if (flags != NULL && (mx_get_char_idex(flags, 'l') > 0 || mx_get_char_idex(flags, 'p') > 0)){
+    if (flags != NULL && (mx_get_char_index(flags, 'l') > 0 || mx_get_char_index(flags, 'p') > 0)){
         mx_printstr(" ");
         mx_printint(job->pid);
     }
@@ -23,7 +23,7 @@ static void print_job(t_jobs *jobs, int num, char *flags) {
         if (job->data[k + 1]) mx_printstr(" ");
     }
     mx_printstr("\n");
-    if (flags != NULL && mx_get_char_idex(flags, 'd') > 0) {
+    if (flags != NULL && mx_get_char_index(flags, 'd') > 0) {
         mx_printstr("(pwd : ");
         if (mx_strcmp(job->pwd, getenv("HOME")) == 0) mx_printstr("~"); 
         else mx_printstr(job->pwd);
@@ -47,7 +47,7 @@ static int change_job(char **args, t_jobs *jobs, int i, char *flags) {
     int id;
     t_jobs *job = jobs;
 
-    if (flags == NULL && args[1] != NULL || flags != NULL && args[2] != NULL) {
+    if (flags == NULL && ((args[1] != NULL || flags != NULL) && args[2] != NULL)) {
         for (; args[i]; i++) {
             id = mx_name_search(args[i], jobs);
             if (id == -1) {
@@ -58,7 +58,7 @@ static int change_job(char **args, t_jobs *jobs, int i, char *flags) {
         }
     } else { 
         i = 0;
-        while(*job) { 
+        while(job) { 
             print_job(jobs, i, flags);  
             i++;
             job = job->next;
