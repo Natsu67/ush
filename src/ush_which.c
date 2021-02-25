@@ -9,7 +9,7 @@ static int check_access(char *argument, int flag) {
         temp = mx_strjoin(splitted_path[i], "/");
         temp = mx_strjoin(temp, argument);
         if (access(temp, F_OK) == 0) {
-            flag != 2 ? printf("%s\n", temp) : 0;
+            printf("%s\n", temp);
             is_access = 0;
             if (flag == 0) break;
         }
@@ -20,14 +20,22 @@ static int check_access(char *argument, int flag) {
     return is_access;
 }
 
-static int check_if_builtin(char *argument) {
+static int check_if_builtin(char *argument, int flag) {
     char *builtin[] = {"which", "unset", "cd", "chdir", "echo", "pwd", "exit", "alias", "env", "kill", "false", "true", "bg", "fg", "if", "jobs", "export", "exec", "continue", "break", NULL};
 
     for (int i = 0; builtin[i]; i++) {
         if (strcmp(builtin[i], argument) == 0) {
             mx_printerr(argument);
             mx_printerr(": ush built-in command\n");
-            return 0;
+            if (flag == 1) {
+                char *temp = mx_strdup("bin/");
+                temp = mx_strjoin(temp, argument);
+                if (access(temp, F_OK) == 0) {
+                    printf("%s\n", temp);
+                }
+                return 1;
+            }
+            else return 0;
         }
     }
     return 1;
@@ -48,16 +56,17 @@ int mx_ush_which(char **args) {
     args++;
 
     int is_access = 0;
-    
+    int first = 1;
     while(*args) {
         is_access = 0;
-        if (check_if_builtin(*args)) {
+        if (check_if_builtin(*args, flag)) {
             is_access = check_access(*args, flag);
-            if (is_access == 1 && flag != 2) {
+            if (is_access == 1 && (first || flag != 1)) {
                 mx_printstr(*args);
                 mx_printerr(" not found\n");
             }
         }
+        first = 0;
         args++;
     }
     return 1;
